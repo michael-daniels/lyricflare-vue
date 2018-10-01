@@ -18,10 +18,10 @@
           </div>
           <div class="modal-options">
             <div class="single-option" @click="toggleShowRhymes">
-              <i class="fa fa-search" aria-hidden="true"></i>Find Rhyme
+              <i class="fa fa-search" aria-hidden="true"></i>Rhymes
             </div>
             <div class="single-option" @click="toggleShowNextWords">
-              <i class="fa fa-arrow-right" aria-hidden="true"></i>Next Word
+              <i class="fa fa-arrow-right" aria-hidden="true"></i>Words
             </div>
             <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Lyrics
@@ -58,6 +58,7 @@
 
         <div class="action-bar" v-if="showUploadLyrics">
           <div class="action-left">
+            <span class="action-tip">Upload lyrics from other songs to get similar suggestions</span>
             <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
           </div>
           <div class="action-right">
@@ -67,6 +68,7 @@
 
         <div class="action-bar" v-if="showUploadMusic">
           <div class="action-left">
+            <span class="action-tip">Adding music will allow you to play it as you write</span>
             <input type="text" placeholder="YouTube link">
           </div>
           <div class="action-right">
@@ -76,7 +78,8 @@
 
         <div class="action-bar" v-if="showGenreMenu">
           <div class="action-left">
-            <select class="" name="">
+            <span class="action-tip">The genre you choose will affect the rhymes and words we suggest to you</span>
+            <select class="select-genre" name="">
               <option value="">Pop</option>
               <option value="">Country</option>
               <option value="">Hip-hop</option>
@@ -336,6 +339,9 @@ export default {
 
   .action-left {
     flex: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .action-right {
@@ -343,5 +349,20 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .action-tip {
+    font-family: Baloo Paaji;
+    color: white;
+  }
+
+  .select-genre {
+    min-width: 10vw;
+    margin: 0 50px;
+
+    border: none;
+    font-size: 22px;
+    text-align: center;
+    font-family: K2D;
   }
 </style>
