@@ -17,19 +17,34 @@
             <h1>{{ this.song.title }}</h1>
           </div>
           <div class="modal-options">
-            <div class="single-option">
+            <div class="single-option" @click="toggleShowRhymes">
               <i class="fa fa-search" aria-hidden="true"></i>Find a Rhyme
             </div>
-            <div class="single-option">
+            <div class="single-option" @click="toggleShowNextWords">
               <i class="fa fa-arrow-right" aria-hidden="true"></i>Next Word Suggestion
             </div>
-            <div class="single-option">
+            <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Upload Lyrics
             </div>
           </div>
           <div class="close-modal" @click="closeModal">
             <i class="fa fa-times" aria-hidden="true"></i>
           </div>
+        </div>
+
+        <div class="action-bar" v-if="showRhymes">
+          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
+        </div>
+
+        <div class="action-bar" v-if="showNextWords">
+          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+        </div>
+
+        <div class="action-bar" v-if="showUploadLyrics">
+          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
         </div>
 
         <div class="modal-content">
@@ -57,6 +72,9 @@ export default {
   data() {
     return {
       isHover: false,
+      showRhymes: false,
+      showNextWords: false,
+      showUploadLyrics: false,
     }
   },
 
@@ -79,7 +97,31 @@ export default {
       } else if (event.type === 'mouseout') {
         this.isHover = false;
       }
-    }
+    },
+
+    toggleShowRhymes() {
+      this.showUploadLyrics = false;
+      this.showRhymes = true;
+      this.showNextWords = false;
+    },
+
+    toggleShowNextWords() {
+      this.showUploadLyrics = false;
+      this.showRhymes = false;
+      this.showNextWords = true;
+    },
+
+    toggleUploadLyrics() {
+      this.showUploadLyrics = true;
+      this.showRhymes = false;
+      this.showNextWords = false;
+    },
+
+    hideAllActions() {
+      this.showUploadLyrics = false;
+      this.showRhymes = false;
+      this.showNextWords = false;
+    },
   },
 
 }
@@ -197,5 +239,32 @@ export default {
 
   .fa-times:hover {
     color: limegreen;
+  }
+
+  .action-bar {
+    padding: 20px 7vw;
+    background-color: limegreen;
+  }
+
+  .word-suggestion {
+    color: lightgray;
+    font-size: 24px;
+  }
+
+  .word-suggestion:hover {
+    color: limegreen;
+
+  }
+
+  .upload-lyrics {
+    width: 100%;
+  }
+
+  .fa-times-action {
+    color: white;
+  }
+
+  .fa-times-action:hover {
+    color: white;
   }
 </style>

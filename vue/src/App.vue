@@ -43,8 +43,8 @@ export default {
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: null,
-            tempNextWords: [],
-            tempRhymes: [],
+            tempNextWords: ['gun', 'left', 'hard'],
+            tempRhymes: ['bird', 'nerd'],
           },
           {
             id: 2,
