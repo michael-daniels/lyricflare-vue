@@ -8,11 +8,18 @@
         </div>
 
         <div class="song-tile-container">
-          <div class="ghost-song-tile">
+          <div v-if="!isCreating" class="ghost-song-tile" @click="toggleIsCreating">
             +
+          </div>
+          <div v-else class="ghost-song-tile">
+            <form class="" @submit="addNewSong">
+              <input type="text" ref="titleInput" v-model="newSong.title" placeholder="Title" class="new-song-title-input" @mouseout="toggleIsCreating">
+            </form>
+
           </div>
 
           <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" />
+
         </div>
 
         <img class="banner-ad" src="http://www.effectsbay.com/wp-content/uploads/2011/07/guitar-center-10-percent-10days.jpg" alt="">
@@ -22,13 +29,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Navbar from './Navbar.vue'
 import SongTile from './SongTile.vue'
 
 export default {
   components: {
     Navbar,
-    SongTile
+    SongTile,
   },
 
   name: 'Screen',
@@ -39,7 +47,33 @@ export default {
 
   data() {
     return {
+      isCreating: false,
+      newSong: {
+        id: null,
+        title: '',
+        createdOn: 'somedate',
+        lastEdited: 'someotherdate',
+        isPublic: false,
+        showAds: true,
+        savedInstrumentals: [{ title: 'Drop da Bass' }],
+        savedRecordings: [{ title: 'Sample Melody' }],
+        savedLyrics: null,
+        tempNextWords: [],
+        tempRhymes: [],
+      },
+    }
+  },
 
+  methods: {
+    toggleIsCreating() {
+      this.isCreating = !this.isCreating
+    },
+
+    addNewSong() {
+      event.preventDefault();
+      this.newSong.id = this.state.savedSongs.length + 1;
+      this.state.savedSongs.unshift({...this.newSong});
+      this.newSong.title = '';
     }
   },
 }
@@ -71,6 +105,7 @@ export default {
       border: 5px limegreen dashed;
       font-size: 50px;
       color: limegreen;
+      cursor: pointer;
     }
 
     .ghost-song-tile:hover {
@@ -97,5 +132,16 @@ export default {
     .banner-ad {
       margin: 25px 0;
     }
+
+    .new-song-title-input {
+      text-align: center;
+      height: 45px;
+      width: 80%;
+      border: 5px limegreen dashed;
+    }
+
+
+    @import url('https://use.fontawesome.com/releases/v5.2.0/css/all.css');
+    @import url('http://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css');
 
 </style>

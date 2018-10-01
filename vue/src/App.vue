@@ -34,17 +34,20 @@ export default {
         collaborators: [{ id: 2, firstName: 'Liz', lastName: 'Daniels' }],
         savedSongs: [
           {
+            id: 1,
             title: 'Make You Miss Me',
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
             isPublic: false,
+            showAds: true,
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
-            savedLyrics: [],
+            savedLyrics: null,
             tempNextWords: [],
             tempRhymes: [],
           },
           {
+            id: 2,
             title: 'Killshot',
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
@@ -56,6 +59,7 @@ export default {
             tempRhymes: [],
           },
           {
+            id: 3,
             title: 'My Kind of Girl',
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
@@ -67,6 +71,7 @@ export default {
             tempRhymes: [],
           },
           {
+            id: 4,
             title: 'Over There',
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
@@ -85,6 +90,10 @@ export default {
 </script>
 
 <style>
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+      color: lightgray;
+      opacity: 1; /* Firefox */
+  }
   @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
   @import url('https://fonts.googleapis.com/css?family=K2D');
 
@@ -98,7 +107,7 @@ export default {
   }
 
   h1 {
-    color: gray;
+    color: limegreen;
     font-family: K2D;
   }
 
