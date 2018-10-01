@@ -94,7 +94,7 @@ export default {
       color: lightgray;
       opacity: 1; /* Firefox */
   }
-  @import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+  @import url('https://fonts.googleapis.com/css?family=Baloo+Paaji');
   @import url('https://fonts.googleapis.com/css?family=K2D');
 
   * {

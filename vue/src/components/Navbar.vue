@@ -1,8 +1,7 @@
 <template>
   <div class="navbar">
     <div class="logo">
-      <!-- <img class="logo-icon" :src="this.state.logo" alt=""> -->
-      <span class="logo-lyric">Lyric</span><span class="logo-flare">Flare</span>
+      <span class="logo-lyric"><i class="fas fa-fire"></i>lyric</span><span class="logo-flare">flare</span>
     </div>
     <div class="menu">
       <div class="menu-item-1">
@@ -55,6 +54,7 @@ export default {
   .logo {
     align-items: left;
     flex: 1;
+    letter-spacing: 1px;
   }
 
   .logo-icon {
@@ -64,13 +64,18 @@ export default {
   .logo-lyric {
     color: limegreen;
     font-size: 40px;
-    font-family: K2D;
+    font-family: Baloo Paaji;
   }
 
   .logo-flare {
     color: gray;
     font-size: 40px;
-    font-family: K2D;
+    font-family: Baloo Paaji;
+  }
+
+  .fa-fire {
+    font-size: 30px;
+    margin-right: 3px;
   }
 
   .menu {

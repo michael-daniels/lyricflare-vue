@@ -24,10 +24,13 @@
               <i class="fa fa-arrow-right" aria-hidden="true"></i>Next Word
             </div>
             <div class="single-option" @click="toggleUploadLyrics">
-              <i class="fa fa-upload" aria-hidden="true"></i>Upload Lyrics
+              <i class="fa fa-upload" aria-hidden="true"></i>Lyrics
             </div>
             <div class="single-option" @click="toggleUploadMusic">
-              <i class="fa fa-upload" aria-hidden="true"></i>Upload Music
+              <i class="fa fa-upload" aria-hidden="true"></i>Music
+            </div>
+            <div class="single-option" @click="toggleGenre">
+              <i class="fa fa-upload" aria-hidden="true"></i>Genre
             </div>
           </div>
           <div class="close-modal" @click="closeModal">
@@ -71,6 +74,19 @@
           </div>
         </div>
 
+        <div class="action-bar" v-if="showGenreMenu">
+          <div class="action-left">
+            <select class="" name="">
+              <option value="">Pop</option>
+              <option value="">Country</option>
+              <option value="">Hip-hop</option>
+            </select>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
+        </div>
+
         <div class="modal-content">
           <div class="modal-content-item">
               <textarea class="text-area" v-model="song.savedLyrics" name="name" placeholder="Your next hit starts here...">
@@ -100,6 +116,7 @@ export default {
       showNextWords: false,
       showUploadLyrics: false,
       showUploadMusic: false,
+      showGenreMenu: false,
     }
   },
 
@@ -125,6 +142,7 @@ export default {
     },
 
     toggleShowRhymes() {
+      this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = true;
@@ -132,6 +150,7 @@ export default {
     },
 
     toggleShowNextWords() {
+      this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = false;
@@ -139,6 +158,7 @@ export default {
     },
 
     toggleUploadLyrics() {
+      this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = true;
       this.showRhymes = false;
@@ -146,13 +166,23 @@ export default {
     },
 
     toggleUploadMusic() {
+      this.showGenreMenu = false;
       this.showUploadMusic = true;
       this.showUploadLyrics = false;
       this.showRhymes = false;
       this.showNextWords = false;
     },
 
+    toggleGenre() {
+      this.showGenreMenu = true;
+      this.showUploadMusic = false;
+      this.showUploadLyrics = false;
+      this.showRhymes = false;
+      this.showNextWords = false;
+    },
+
     hideAllActions() {
+      this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = false;
