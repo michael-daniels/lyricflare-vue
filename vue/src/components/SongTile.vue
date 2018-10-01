@@ -18,10 +18,10 @@
           </div>
           <div class="modal-options">
             <div class="single-option" @click="toggleShowRhymes">
-              <i class="fa fa-search" aria-hidden="true"></i>Find a Rhyme
+              <i class="fa fa-search" aria-hidden="true"></i>Find Rhyme
             </div>
             <div class="single-option" @click="toggleShowNextWords">
-              <i class="fa fa-arrow-right" aria-hidden="true"></i>Next Word Suggestion
+              <i class="fa fa-arrow-right" aria-hidden="true"></i>Next Word
             </div>
             <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Upload Lyrics
@@ -33,18 +33,31 @@
         </div>
 
         <div class="action-bar" v-if="showRhymes">
-          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
-          <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          <div class="action-left">
+            <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
         </div>
 
         <div class="action-bar" v-if="showNextWords">
-          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
-          <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          <div class="action-left">
+            <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
         </div>
 
         <div class="action-bar" v-if="showUploadLyrics">
-          <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
-          <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
+
+          <div class="action-left">
+            <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
         </div>
 
         <div class="modal-content">
@@ -242,18 +255,18 @@ export default {
   }
 
   .action-bar {
+    display: flex;
     padding: 20px 7vw;
     background-color: limegreen;
   }
 
   .word-suggestion {
-    color: lightgray;
+    color: white;
     font-size: 24px;
   }
 
   .word-suggestion:hover {
-    color: limegreen;
-
+    color: white;
   }
 
   .upload-lyrics {
@@ -266,5 +279,16 @@ export default {
 
   .fa-times-action:hover {
     color: white;
+  }
+
+  .action-left {
+    flex: 10;
+  }
+
+  .action-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
