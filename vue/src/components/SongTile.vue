@@ -26,6 +26,9 @@
             <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Upload Lyrics
             </div>
+            <div class="single-option" @click="toggleUploadMusic">
+              <i class="fa fa-upload" aria-hidden="true"></i>Upload Music
+            </div>
           </div>
           <div class="close-modal" @click="closeModal">
             <i class="fa fa-times" aria-hidden="true"></i>
@@ -51,9 +54,17 @@
         </div>
 
         <div class="action-bar" v-if="showUploadLyrics">
-
           <div class="action-left">
             <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
+        </div>
+
+        <div class="action-bar" v-if="showUploadMusic">
+          <div class="action-left">
+            <input type="text" placeholder="YouTube link">
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -88,6 +99,7 @@ export default {
       showRhymes: false,
       showNextWords: false,
       showUploadLyrics: false,
+      showUploadMusic: false,
     }
   },
 
@@ -113,24 +125,35 @@ export default {
     },
 
     toggleShowRhymes() {
+      this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = true;
       this.showNextWords = false;
     },
 
     toggleShowNextWords() {
+      this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = false;
       this.showNextWords = true;
     },
 
     toggleUploadLyrics() {
+      this.showUploadMusic = false;
       this.showUploadLyrics = true;
       this.showRhymes = false;
       this.showNextWords = false;
     },
 
+    toggleUploadMusic() {
+      this.showUploadMusic = true;
+      this.showUploadLyrics = false;
+      this.showRhymes = false;
+      this.showNextWords = false;
+    },
+
     hideAllActions() {
+      this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = false;
       this.showNextWords = false;
