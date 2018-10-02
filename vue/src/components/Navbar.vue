@@ -63,13 +63,13 @@ export default {
 
   .logo-lyric {
     color: limegreen;
-    font-size: 40px;
+    font-size: 35px;
     font-family: Poppins;
   }
 
   .logo-flare {
     color: gray;
-    font-size: 40px;
+    font-size: 35px;
     font-family: Poppins;
   }
 

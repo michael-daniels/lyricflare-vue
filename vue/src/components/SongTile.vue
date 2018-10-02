@@ -166,7 +166,8 @@ export default {
       this.showRhymes = true;
       this.showNextWords = false;
 
-      this.song.getRhymes('black')
+      const selectedWord = window.getSelection().anchorNode.textContent;
+      this.song.getRhymes(selectedWord);
     },
 
     toggleShowNextWords() {

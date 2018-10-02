@@ -141,6 +141,7 @@ export default {
       border: 3px limegreen dashed;
       border-radius: 5px;
       outline: none;
+      color: gray;
     }
 
 
