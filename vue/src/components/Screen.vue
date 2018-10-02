@@ -18,7 +18,7 @@
 
           </div>
 
-          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" />
+          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" :tempRhymes="state.tempRhymes" />
 
         </div>
 
@@ -102,7 +102,7 @@ export default {
       align-items: center;
       margin: 25px;
       text-align: center;
-      border: 5px limegreen dashed;
+      border: 3px limegreen dashed;
       font-size: 50px;
       color: limegreen;
       cursor: pointer;
@@ -119,7 +119,7 @@ export default {
         align-items: center;
         margin: 25px;
         text-align: center;
-        border: 5px limegreen dashed;
+        border: 3px limegreen dashed;
         font-size: 50px;
         color: limegreen;
       }
@@ -137,7 +137,10 @@ export default {
       text-align: center;
       height: 45px;
       width: 80%;
-      border: 5px limegreen dashed;
+      font-size: 24px;
+      border: 3px limegreen dashed;
+      border-radius: 5px;
+      outline: none;
     }
 
 

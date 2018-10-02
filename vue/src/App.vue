@@ -32,6 +32,7 @@ export default {
         timeZone: 'Mountain',
         location: 'some coordinates',
         collaborators: [{ id: 2, firstName: 'Liz', lastName: 'Daniels' }],
+        tempRhymes: [],
         savedSongs: [
           {
             id: 1,
@@ -44,7 +45,7 @@ export default {
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: null,
             tempNextWords: ['gun', 'left', 'hard'],
-            tempRhymes: ['bird', 'nerd'],
+            getRhymes: this.getRhymes,
           },
           {
             id: 2,
@@ -56,7 +57,7 @@ export default {
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
             tempNextWords: [],
-            tempRhymes: [],
+            getRhymes: this.getRhymes,
           },
           {
             id: 3,
@@ -68,7 +69,7 @@ export default {
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
             tempNextWords: [],
-            tempRhymes: [],
+            getRhymes: this.getRhymes,
           },
           {
             id: 4,
@@ -80,10 +81,26 @@ export default {
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
             tempNextWords: [],
-            tempRhymes: [],
+            getRhymes: this.getRhymes,
           },
         ],
       },
+    }
+  },
+
+  methods: {
+    getRhymes(userInput) {
+      console.log('tempRhymes', this.state.tempRhymes)
+      fetch(`https://api.datamuse.com//words?rel_rhy=${userInput}`)
+        .then((data) => {
+          return data.json();
+        })
+        .then((rhymes) => {
+          this.state.tempRhymes = rhymes;
+        })
+        .catch((error) => {
+          alert(error)
+        })
     }
   },
 }
@@ -94,8 +111,8 @@ export default {
       color: lightgray;
       opacity: 1; /* Firefox */
   }
-  @import url('https://fonts.googleapis.com/css?family=Baloo+Paaji');
-  @import url('https://fonts.googleapis.com/css?family=K2D');
+  @import url('https://fonts.googleapis.com/css?family=Poppins');
+  @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 
   * {
     margin: 0;
@@ -104,16 +121,17 @@ export default {
 
   body {
     background-color: #f2f2f2;
+    font-family: Anonymous Pro;
   }
 
   h1 {
     color: limegreen;
-    font-family: K2D;
+    font-family: Poppins;
   }
 
   h2 {
     color: limegreen;
-    font-family: K2D;
+    font-family: Poppins;
   }
 
   h3 {

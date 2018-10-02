@@ -23,14 +23,17 @@
             <div class="single-option" @click="toggleShowNextWords">
               <i class="fa fa-arrow-right" aria-hidden="true"></i>Words
             </div>
+            <div class="single-option" @click="toggleBank">
+              <i class="fas fa-piggy-bank"></i>Bank
+            </div>
+            <div class="single-option" @click="toggleGenre">
+              <i class="fa fa-upload" aria-hidden="true"></i>Genre
+            </div>
             <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Lyrics
             </div>
             <div class="single-option" @click="toggleUploadMusic">
               <i class="fa fa-upload" aria-hidden="true"></i>Music
-            </div>
-            <div class="single-option" @click="toggleGenre">
-              <i class="fa fa-upload" aria-hidden="true"></i>Genre
             </div>
           </div>
           <div class="close-modal" @click="closeModal">
@@ -39,8 +42,8 @@
         </div>
 
         <div class="action-bar" v-if="showRhymes">
-          <div class="action-left">
-            <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          <div class="action-left rhymes-scroll">
+            <span v-for="word in tempRhymes"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -56,9 +59,18 @@
           </div>
         </div>
 
+        <div class="action-bar" v-if="showBank">
+          <div class="action-left">
+            <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          </div>
+          <div class="action-right">
+            <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
+          </div>
+        </div>
+
         <div class="action-bar" v-if="showUploadLyrics">
           <div class="action-left">
-            <span class="action-tip">Upload lyrics from other songs to get similar suggestions</span>
+            <div class="action-tip">GET PRO Upload lyrics from other songs to mimic their writing style</div>
             <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
           </div>
           <div class="action-right">
@@ -68,8 +80,8 @@
 
         <div class="action-bar" v-if="showUploadMusic">
           <div class="action-left">
-            <span class="action-tip">Adding music will allow you to play it as you write</span>
-            <input type="text" placeholder="YouTube link">
+            <span class="action-tip">GET PRO Adding music will allow you to play and control it as you write</span>
+            <input class="music-url" type="text" placeholder="YouTube link">
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -78,7 +90,7 @@
 
         <div class="action-bar" v-if="showGenreMenu">
           <div class="action-left">
-            <span class="action-tip">The genre you choose will affect the rhymes and words we suggest to you</span>
+            <span class="action-tip">GET PRO The genre you choose will influence writing assistance decisions</span>
             <select class="select-genre" name="">
               <option value="">Pop</option>
               <option value="">Country</option>
@@ -109,7 +121,8 @@ export default {
   name: 'SongTile',
 
   props: {
-    song: Object
+    song: Object,
+    tempRhymes: Array,
   },
 
   data() {
@@ -120,6 +133,7 @@ export default {
       showUploadLyrics: false,
       showUploadMusic: false,
       showGenreMenu: false,
+      showBank: false,
     }
   },
 
@@ -145,14 +159,18 @@ export default {
     },
 
     toggleShowRhymes() {
+      this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
       this.showRhymes = true;
       this.showNextWords = false;
+
+      this.song.getRhymes('black')
     },
 
     toggleShowNextWords() {
+      this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
@@ -161,6 +179,7 @@ export default {
     },
 
     toggleUploadLyrics() {
+      this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = true;
@@ -169,6 +188,7 @@ export default {
     },
 
     toggleUploadMusic() {
+      this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = true;
       this.showUploadLyrics = false;
@@ -177,6 +197,7 @@ export default {
     },
 
     toggleGenre() {
+      this.showBank = false;
       this.showGenreMenu = true;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
@@ -184,7 +205,17 @@ export default {
       this.showNextWords = false;
     },
 
+    toggleBank() {
+      this.showBank = true;
+      this.showGenreMenu = false;
+      this.showUploadMusic = false;
+      this.showUploadLyrics = false;
+      this.showRhymes = false;
+      this.showNextWords = false;
+    },
+
     hideAllActions() {
+      this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
@@ -269,7 +300,7 @@ export default {
     align-items: center;
     justify-content: center;
     color: lightgray;
-    font-family: K2D;
+    font-family: Anonymous Pro;
     font-size: 16px;
   }
 
@@ -301,6 +332,10 @@ export default {
     margin-right: 10px;
   }
 
+  .fas {
+    margin-right: 10px;
+  }
+
   .fa-times {
     font-size: 24px;
     color: lightgray;
@@ -327,6 +362,13 @@ export default {
 
   .upload-lyrics {
     width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    min-height: 300px;
+    padding-top:50px;
+    text-align: center;
+    margin: 20px 0;
   }
 
   .fa-times-action {
@@ -339,9 +381,6 @@ export default {
 
   .action-left {
     flex: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   .action-right {
@@ -352,17 +391,32 @@ export default {
   }
 
   .action-tip {
-    font-family: Baloo Paaji;
+    font-family: Anonymous Pro;
     color: white;
   }
 
   .select-genre {
     min-width: 10vw;
     margin: 0 50px;
-
     border: none;
-    font-size: 22px;
+    font-size: 16px;
     text-align: center;
-    font-family: K2D;
+    font-family: Anonymous Pro;
+  }
+
+  .music-url {
+    height: 20px;
+    width: 150px;
+    margin: 0 50px;
+    text-align: center;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+  }
+
+  .rhymes-scroll {
+    white-space: nowrap;
+    overflow: scroll;
+    scroll: hidden;
   }
 </style>

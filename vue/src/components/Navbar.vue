@@ -64,13 +64,13 @@ export default {
   .logo-lyric {
     color: limegreen;
     font-size: 40px;
-    font-family: Baloo Paaji;
+    font-family: Poppins;
   }
 
   .logo-flare {
     color: gray;
     font-size: 40px;
-    font-family: Baloo Paaji;
+    font-family: Poppins;
   }
 
   .fa-fire {
@@ -90,7 +90,7 @@ export default {
     height: 90%;
     font-size: 22px;
     text-align: center;
-    font-family: K2D;
+    font-family: Poppins;
   }
 
   .menu-item-1 {
@@ -98,7 +98,7 @@ export default {
     text-align: center;
     padding: 30px 0;
     padding-left: 400px;
-    font-family: K2D;
+    font-family: Poppins;
   }
 
   .menu-item-2 {
