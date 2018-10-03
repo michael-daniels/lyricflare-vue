@@ -42,7 +42,8 @@
         </div>
 
         <div class="action-bar" v-if="showRhymes">
-          <div class="action-left rhymes-scroll">
+          <div class="action-left suggestion-scroll">
+            <span class="action-bar-selected-word">{{ selectedWord.toUpperCase() }}: </span>
             <span v-for="word in tempRhymes"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
           </div>
           <div class="action-right">
@@ -51,8 +52,9 @@
         </div>
 
         <div class="action-bar" v-if="showNextWords">
-          <div class="action-left">
-            <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+          <div class="action-left suggestion-scroll">
+            <span class="action-bar-selected-word">{{ selectedWord.toUpperCase() }}: </span>
+            <span v-for="word in tempWords"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -61,7 +63,7 @@
 
         <div class="action-bar" v-if="showBank">
           <div class="action-left">
-            <span v-for="word in song.tempNextWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+            <span v-for="word in tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -104,7 +106,7 @@
 
         <div class="modal-content">
           <div class="modal-content-item">
-              <textarea class="text-area" v-model="song.savedLyrics" name="name" placeholder="Your next hit starts here...">
+              <textarea class="text-area" v-model="song.savedLyrics" name="name" placeholder="Your next hit starts here..." @click="selectWord($event)">
 
               </textarea>
           </div>
@@ -123,6 +125,7 @@ export default {
   props: {
     song: Object,
     tempRhymes: Array,
+    tempWords: Array,
   },
 
   data() {
@@ -134,19 +137,17 @@ export default {
       showUploadMusic: false,
       showGenreMenu: false,
       showBank: false,
+      selectedWord: '',
     }
   },
 
   methods: {
     openModal() {
-      console.log('open modal', this.song.id)
       this.$modal.show(`${this.song.id}`);
     },
 
     closeModal() {
-      console.log('close modal', this.song.id)
       this.$modal.hide(`${this.song.id}`);
-      console.log(this.song.savedLyrics);
     },
 
     checkHover() {
@@ -166,8 +167,7 @@ export default {
       this.showRhymes = true;
       this.showNextWords = false;
 
-      const selectedWord = window.getSelection().anchorNode.textContent;
-      this.song.getRhymes(selectedWord);
+      this.song.getRhymes(this.selectedWord);
     },
 
     toggleShowNextWords() {
@@ -177,6 +177,8 @@ export default {
       this.showUploadLyrics = false;
       this.showRhymes = false;
       this.showNextWords = true;
+
+      this.song.getNextWords(this.selectedWord);
     },
 
     toggleUploadLyrics() {
@@ -222,6 +224,52 @@ export default {
       this.showUploadLyrics = false;
       this.showRhymes = false;
       this.showNextWords = false;
+    },
+
+    selectWord(event) {
+      console.log(event.target.selectionStart);
+      console.log(event.target.selectionEnd);
+
+      if (event.target.selectionStart === event.target.selectionEnd) {
+        console.log('just a click ya dick')// isolate word where click occurred
+        let sampleText = 'this is some bullshit right hurr';
+
+        let selectionValue = event.target.selectionStart;
+
+        let startIndex = null;
+
+        let selectedWord = ''
+
+        for (let i = selectionValue; i < event.target.value.length; i++) {
+          if (event.target.value[i] === ' ') {
+            startIndex = i;
+            break;
+          }
+        }
+
+        for (let i = startIndex - 1; i >= 0; i--) {
+          if (event.target.value[i] === ' ') {
+            break;
+          }
+          selectedWord += event.target.value[i]
+        }
+
+        this.selectedWord = selectedWord.split('').reverse('').join('');
+        console.log('click', selectedWord.split('').reverse('').join(''))
+
+      } else {
+          let selectDiff = event.target.selectionEnd - event.target.selectionStart;
+          let inputValue = event.target.value;
+          let selectedWord = '';
+
+          for (let i = event.target.selectionStart; i < event.target.selectionEnd; i++) {
+            console.log(inputValue[i])
+            selectedWord += inputValue[i];
+          }
+
+          console.log('selectedWord', selectedWord)
+          this.selectedWord = selectedWord;
+      }
     },
   },
 
@@ -415,9 +463,14 @@ export default {
     border: none;
   }
 
-  .rhymes-scroll {
+  .suggestion-scroll {
     white-space: nowrap;
     overflow: scroll;
     scroll: hidden;
+  }
+
+  .action-bar-selected-word {
+    font-size: 28px;
+    color:white;
   }
 </style>

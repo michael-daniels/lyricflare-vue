@@ -18,7 +18,7 @@
 
           </div>
 
-          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" :tempRhymes="state.tempRhymes" />
+          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" :tempRhymes="state.tempRhymes" :tempWords="state.tempWords" />
 
         </div>
 
@@ -58,7 +58,7 @@ export default {
         savedInstrumentals: [{ title: 'Drop da Bass' }],
         savedRecordings: [{ title: 'Sample Melody' }],
         savedLyrics: null,
-        tempNextWords: [],
+        tempWords: [],
         tempRhymes: [],
       },
     }

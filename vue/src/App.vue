@@ -33,6 +33,7 @@ export default {
         location: 'some coordinates',
         collaborators: [{ id: 2, firstName: 'Liz', lastName: 'Daniels' }],
         tempRhymes: [],
+        tempWords: ['datestes'],
         savedSongs: [
           {
             id: 1,
@@ -44,8 +45,8 @@ export default {
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: null,
-            tempNextWords: ['gun', 'left', 'hard'],
             getRhymes: this.getRhymes,
+            getNextWords: this.getNextWords,
           },
           {
             id: 2,
@@ -56,8 +57,8 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            tempNextWords: [],
             getRhymes: this.getRhymes,
+            getNextWords: this.getNextWords,
           },
           {
             id: 3,
@@ -68,8 +69,8 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            tempNextWords: [],
             getRhymes: this.getRhymes,
+            getNextWords: this.getNextWords,
           },
           {
             id: 4,
@@ -80,8 +81,8 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            tempNextWords: [],
             getRhymes: this.getRhymes,
+            getNextWords: this.getNextWords,
           },
         ],
       },
@@ -90,13 +91,25 @@ export default {
 
   methods: {
     getRhymes(userInput) {
-      console.log('tempRhymes', this.state.tempRhymes)
-      fetch(`https://api.datamuse.com//words?rel_rhy=${userInput}`)
+      fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
         .then((data) => {
           return data.json();
         })
         .then((rhymes) => {
           this.state.tempRhymes = rhymes;
+        })
+        .catch((error) => {
+          alert(error)
+        })
+    },
+
+    getNextWords(userInput) {
+      fetch(`https://api.datamuse.com/words?lc=${userInput}`)
+        .then((data) => {
+          return data.json();
+        })
+        .then((words) => {
+          this.state.tempWords = words;
         })
         .catch((error) => {
           alert(error)
