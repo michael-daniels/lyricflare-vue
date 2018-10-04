@@ -43,7 +43,6 @@
 
         <div class="action-bar" v-if="showRhymes">
           <div class="action-left suggestion-scroll">
-            <span class="action-bar-selected-word">{{ selectedWord.toUpperCase() }}: </span>
             <span v-for="word in tempRhymes"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
           </div>
           <div class="action-right">
@@ -53,7 +52,6 @@
 
         <div class="action-bar" v-if="showNextWords">
           <div class="action-left suggestion-scroll">
-            <span class="action-bar-selected-word">{{ selectedWord.toUpperCase() }}: </span>
             <span v-for="word in tempWords"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
           </div>
           <div class="action-right">
@@ -73,7 +71,7 @@
         <div class="action-bar" v-if="showUploadLyrics">
           <div class="action-left">
             <div class="action-tip">GET PRO Upload lyrics from other songs to mimic their writing style</div>
-            <textarea class="upload-lyrics" placeholder="Paste lyrics here"></textarea>
+            <textarea class="upload-lyrics" placeholder="Paste lyrics here" @input="uploadLyricsHandler"></textarea>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -106,7 +104,7 @@
 
         <div class="modal-content">
           <div class="modal-content-item">
-              <textarea class="text-area" v-model="song.savedLyrics" name="name" placeholder="Your next hit starts here..." @click="selectWord($event)">
+              <textarea ref="mainTextArea" class="main-text-area" v-model="song.songLyrics" name="name" placeholder="Your next hit starts here..." @click="selectWord($event)">
 
               </textarea>
           </div>
@@ -128,6 +126,42 @@ export default {
     tempWords: Array,
   },
 
+  watch: {
+    //watch this.tempRhymes for change
+    //when changed, fun a function that filters it and resets it.
+    tempRhymes() {
+      console.log('tempRhymes', this.tempRhymes.length, 'uploadLyrics', this.song.uploadLyrics.length)
+      let tempRhymesLength = this.tempRhymes.length;
+      let uploadLyricsLength = this.song.uploadLyrics.length;
+
+      if (tempRhymesLength > uploadLyricsLength) {
+
+        let tempRhymesClone = ['hey'];
+
+        for (let i = 0; i < this.tempRhymes.length; i++) {
+
+          for (let j = 0; j < this.song.uploadLyrics.length; j++) {
+            console.log('loop', this.tempRhymes[i].word, this.song.uploadLyrics[j])
+            if (this.tempRhymes[i].word === this.song.uploadLyrics[j]) {
+              tempRhymesClone.push(this.tempRhymes[i].word)
+            }
+          }
+
+        }
+
+        this.tempRhymes = tempRhymesClone;
+
+      }
+      else if (tempRhymesLength < uploadLyricsLength) {
+
+
+
+      } else {
+        //equal
+      }
+    }
+  },
+
   data() {
     return {
       isHover: false,
@@ -138,6 +172,7 @@ export default {
       showGenreMenu: false,
       showBank: false,
       selectedWord: '',
+      confirm: 'Uploaded! Add more...'
     }
   },
 
@@ -231,14 +266,14 @@ export default {
       console.log(event.target.selectionEnd);
 
       if (event.target.selectionStart === event.target.selectionEnd) {
-        console.log('just a click ya dick')// isolate word where click occurred
-        let sampleText = 'this is some bullshit right hurr';
+        console.log('mainTextArea', this.$refs)
 
         let selectionValue = event.target.selectionStart;
 
         let startIndex = null;
+        let endIndex = null;
 
-        let selectedWord = ''
+        let selectedWord = '';
 
         for (let i = selectionValue; i < event.target.value.length; i++) {
           if (event.target.value[i] === ' ') {
@@ -249,16 +284,16 @@ export default {
 
         for (let i = startIndex - 1; i >= 0; i--) {
           if (event.target.value[i] === ' ') {
+            endIndex = i;
             break;
           }
           selectedWord += event.target.value[i]
         }
 
+        this.$refs.mainTextArea.setSelectionRange(endIndex, startIndex)
         this.selectedWord = selectedWord.split('').reverse('').join('');
-        console.log('click', selectedWord.split('').reverse('').join(''))
 
       } else {
-          let selectDiff = event.target.selectionEnd - event.target.selectionStart;
           let inputValue = event.target.value;
           let selectedWord = '';
 
@@ -269,6 +304,22 @@ export default {
 
           console.log('selectedWord', selectedWord)
           this.selectedWord = selectedWord;
+      }
+    },
+
+    uploadLyricsHandler() {
+      let uploadedLyricsArray = event.target.value.split(' ');
+      let uploadLyricsClone = [...this.song.uploadLyrics];
+      let newUploadLyrics = uploadLyricsClone.concat(uploadedLyricsArray)
+
+      this.song.uploadLyrics = newUploadLyrics;
+
+      event.target.value = this.confirm;
+
+      if (this.confirm === 'Uploaded! Add more...') {
+        this.confirm = 'Got it! Add another...';
+      } else {
+        this.confirm = 'Uploaded! Add more...'
       }
     },
   },
@@ -349,7 +400,7 @@ export default {
     align-items: center;
     justify-content: center;
     color: lightgray;
-    font-family: Anonymous Pro;
+    font-family: Bree Serif;
     font-size: 16px;
   }
 
@@ -366,15 +417,20 @@ export default {
     width: 100%;
   }
 
-  .text-area {
+  .main-text-area {
     width: 100%;
     min-height: 100vh;
     text-align: center;
     padding: 10vh 0;
-    font-size: 20px;
+    font-size: 26px;
     border: none;
     outline: none;
     color: gray;
+    cursor: pointer;
+  }
+
+  .main-text-area::selection {
+    color: limegreen;
   }
 
   .fa {
@@ -414,10 +470,12 @@ export default {
     border: none;
     outline: none;
     border-radius: 5px;
-    min-height: 300px;
+    min-height: 90px;
     padding-top:50px;
     text-align: center;
     margin: 20px 0;
+    font-size: 24px;
+    color: limegreen;
   }
 
   .fa-times-action {
@@ -435,12 +493,12 @@ export default {
   .action-right {
     flex: 1;
     display: flex;
-    align-items: center;
+    align-items: top;
     justify-content: center;
   }
 
   .action-tip {
-    font-family: Anonymous Pro;
+    font-family: Bree Serif;
     color: white;
   }
 
@@ -450,7 +508,7 @@ export default {
     border: none;
     font-size: 16px;
     text-align: center;
-    font-family: Anonymous Pro;
+    font-family: Bree Serif;
   }
 
   .music-url {
@@ -469,8 +527,4 @@ export default {
     scroll: hidden;
   }
 
-  .action-bar-selected-word {
-    font-size: 28px;
-    color:white;
-  }
 </style>

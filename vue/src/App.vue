@@ -42,9 +42,11 @@ export default {
             lastEdited: 'someotherdate',
             isPublic: false,
             showAds: true,
+            songLyrics: '',
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
-            savedLyrics: null,
+            savedLyrics: [],
+            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
           },
@@ -54,9 +56,11 @@ export default {
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
             isPublic: true,
+            songLyrics: '',
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
+            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
           },
@@ -66,9 +70,11 @@ export default {
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
             isPublic: true,
+            songLyrics: '',
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
+            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
           },
@@ -78,15 +84,27 @@ export default {
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
             isPublic: true,
+            songLyrics: '',
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
+            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
           },
         ],
       },
     }
+  },
+
+  watch: {
+    'state.savedSongs': {
+      handler(newVal, oldVal) {
+        console.log('dis it', this.state.savedSongs[0].uploadLyrics)
+          // do something with the object
+      },
+      deep: true,
+      }
   },
 
   methods: {
@@ -125,7 +143,7 @@ export default {
       opacity: 1; /* Firefox */
   }
   @import url('https://fonts.googleapis.com/css?family=Poppins');
-  @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+  @import url('https://fonts.googleapis.com/css?family=Bree+Serif');
 
   * {
     margin: 0;
@@ -134,7 +152,7 @@ export default {
 
   body {
     background-color: #f2f2f2;
-    font-family: Anonymous Pro;
+    font-family: Bree Serif;
   }
 
   h1 {
