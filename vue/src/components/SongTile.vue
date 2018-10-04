@@ -127,37 +127,26 @@ export default {
   },
 
   watch: {
-    //watch this.tempRhymes for change
-    //when changed, fun a function that filters it and resets it.
     tempRhymes() {
-      console.log('tempRhymes', this.tempRhymes.length, 'uploadLyrics', this.song.uploadLyrics.length)
-      let tempRhymesLength = this.tempRhymes.length;
-      let uploadLyricsLength = this.song.uploadLyrics.length;
+      if (this.tempRhymesCount < 1) {
+        console.log('tempRhymes', this.tempRhymes.length, 'uploadLyrics', this.song.uploadLyrics.length)
+        let tempRhymesLength = this.tempRhymes.length;
+        let uploadLyricsLength = this.song.uploadLyrics.length;
+        let tempRhymesClone2 = this.tempRhymes;
 
-      if (tempRhymesLength > uploadLyricsLength) {
-
-        let tempRhymesClone = ['hey'];
-
-        for (let i = 0; i < this.tempRhymes.length; i++) {
-
-          for (let j = 0; j < this.song.uploadLyrics.length; j++) {
-            console.log('loop', this.tempRhymes[i].word, this.song.uploadLyrics[j])
-            if (this.tempRhymes[i].word === this.song.uploadLyrics[j]) {
-              tempRhymesClone.push(this.tempRhymes[i].word)
+          for (let i = 0; i < this.tempRhymes.length; i++) {
+            console.log('HEESDFSF', this.tempRhymes[i].word)
+            if (this.song.uploadLyrics.includes(this.tempRhymes[i].word)) {
+              alert('match', this.tempRhymes[i].word)
+              this.tempRhymesClone.push(this.tempRhymes[i])
             }
+
           }
-
-        }
-
-        this.tempRhymes = tempRhymesClone;
-
-      }
-      else if (tempRhymesLength < uploadLyricsLength) {
-
-
-
-      } else {
-        //equal
+          this.tempRhymesCount += 1;
+          this.tempRhymes = this.tempRhymesClone;
+          if (this.tempRhymes.length < 10) {
+            this.tempRhymes = this.tempRhymes.concat(tempRhymesClone2)
+          }
       }
     }
   },
@@ -172,7 +161,9 @@ export default {
       showGenreMenu: false,
       showBank: false,
       selectedWord: '',
-      confirm: 'Uploaded! Add more...'
+      confirm: 'Uploaded! Add more...',
+      tempRhymesClone: [],
+      tempRhymesCount: 0,
     }
   },
 
