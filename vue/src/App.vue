@@ -32,8 +32,6 @@ export default {
         timeZone: 'Mountain',
         location: 'some coordinates',
         collaborators: [{ id: 2, firstName: 'Liz', lastName: 'Daniels' }],
-        tempRhymes: [],
-        tempWords: ['datestes'],
         savedSongs: [
           {
             id: 1,
@@ -46,9 +44,12 @@ export default {
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: [],
-            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
+            uploadLyrics: [],
+            tempRhymes: [],
+            tempWords: [],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
+            genre: 'Country'
           },
           {
             id: 2,
@@ -60,9 +61,12 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
+            uploadLyrics: [],
+            tempRhymes: [],
+            tempWords: [],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
+            genre: 'Pop'
           },
           {
             id: 3,
@@ -74,9 +78,12 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
+            uploadLyrics: [],
+            tempRhymes: [],
+            tempWords: [],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
+            genre: 'Hip-hop'
           },
           {
             id: 4,
@@ -88,9 +95,12 @@ export default {
             savedInstrumentals: [{ title: 'Get at Em' }],
             savedRecordings: [{ title: 'Flow 2' }],
             savedLyrics: [],
-            uploadLyrics: ['tempLyricsShit', 'tempLyricsShit', 'tempLyricsShit'],
+            uploadLyrics: [],
+            tempRhymes: [],
+            tempWords: [],
             getRhymes: this.getRhymes,
             getNextWords: this.getNextWords,
+            genre: 'Country'
           },
         ],
       },
@@ -108,26 +118,45 @@ export default {
   },
 
   methods: {
-    getRhymes(userInput) {
+    getRhymes(userInput, uploadedLyrics, songId) {
       fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
         .then((data) => {
           return data.json();
         })
         .then((rhymes) => {
-          this.state.tempRhymes = rhymes;
+          for (let i = 0; i < rhymes.length; i++) {
+            if (uploadedLyrics.includes(rhymes[i].word)) {
+              this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
+            }
+          }
         })
         .catch((error) => {
           alert(error)
         })
     },
 
-    getNextWords(userInput) {
+    getNextWords(userInput, uploadedLyrics, songId) {
       fetch(`https://api.datamuse.com/words?lc=${userInput}`)
         .then((data) => {
           return data.json();
         })
         .then((words) => {
-          this.state.tempWords = words;
+
+          if (uploadedLyrics.length > 0) {
+            console.log('words if', words)
+            for (let i = 0; i < words.length; i++) {
+              if (uploadedLyrics.includes(words[i].word)) {
+                this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
+              }
+            }
+          } else {
+            console.log('words else', words)
+            for (let i = 0; i < words.length; i++) {
+              this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
+            }
+
+          }
+
         })
         .catch((error) => {
           alert(error)

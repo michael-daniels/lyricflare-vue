@@ -24,7 +24,7 @@
               <i class="fa fa-arrow-right" aria-hidden="true"></i>Words
             </div>
             <div class="single-option" @click="toggleBank">
-              <i class="fas fa-piggy-bank"></i>Bank
+              <i class="fas fa-lightbulb"></i>Ideas
             </div>
             <div class="single-option" @click="toggleGenre">
               <i class="fa fa-upload" aria-hidden="true"></i>Genre
@@ -43,7 +43,7 @@
 
         <div class="action-bar" v-if="showRhymes">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in tempRhymes"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
+            <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -52,7 +52,7 @@
 
         <div class="action-bar" v-if="showNextWords">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in tempWords"><span class="word-suggestion">{{ word.word }}</span>   |   </span>
+            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -61,7 +61,7 @@
 
         <div class="action-bar" v-if="showBank">
           <div class="action-left">
-            <span v-for="word in tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -90,11 +90,12 @@
 
         <div class="action-bar" v-if="showGenreMenu">
           <div class="action-left">
+            <pre>{{ song.genre }}</pre>
             <span class="action-tip">GET PRO The genre you choose will influence writing assistance decisions</span>
-            <select class="select-genre" name="">
-              <option value="">Pop</option>
-              <option value="">Country</option>
-              <option value="">Hip-hop</option>
+            <select class="select-genre" v-model="song.genre">
+              <option value="Pop">Pop</option>
+              <option value="Country">Country</option>
+              <option value="Hip-hop">Hip-hop</option>
             </select>
           </div>
           <div class="action-right">
@@ -122,33 +123,6 @@ export default {
 
   props: {
     song: Object,
-    tempRhymes: Array,
-    tempWords: Array,
-  },
-
-  watch: {
-    tempRhymes() {
-      if (this.tempRhymesCount < 1) {
-        console.log('tempRhymes', this.tempRhymes.length, 'uploadLyrics', this.song.uploadLyrics.length)
-        let tempRhymesLength = this.tempRhymes.length;
-        let uploadLyricsLength = this.song.uploadLyrics.length;
-        let tempRhymesClone2 = this.tempRhymes;
-
-          for (let i = 0; i < this.tempRhymes.length; i++) {
-            console.log('HEESDFSF', this.tempRhymes[i].word)
-            if (this.song.uploadLyrics.includes(this.tempRhymes[i].word)) {
-              alert('match', this.tempRhymes[i].word)
-              this.tempRhymesClone.push(this.tempRhymes[i])
-            }
-
-          }
-          this.tempRhymesCount += 1;
-          this.tempRhymes = this.tempRhymesClone;
-          if (this.tempRhymes.length < 10) {
-            this.tempRhymes = this.tempRhymes.concat(tempRhymesClone2)
-          }
-      }
-    }
   },
 
   data() {
@@ -162,8 +136,6 @@ export default {
       showBank: false,
       selectedWord: '',
       confirm: 'Uploaded! Add more...',
-      tempRhymesClone: [],
-      tempRhymesCount: 0,
     }
   },
 
@@ -186,14 +158,14 @@ export default {
     },
 
     toggleShowRhymes() {
+      this.showRhymes = true;
       this.showBank = false;
       this.showGenreMenu = false;
       this.showUploadMusic = false;
       this.showUploadLyrics = false;
-      this.showRhymes = true;
       this.showNextWords = false;
 
-      this.song.getRhymes(this.selectedWord);
+      this.song.getRhymes(this.selectedWord, this.song.uploadLyrics, this.song.id);
     },
 
     toggleShowNextWords() {
@@ -204,7 +176,7 @@ export default {
       this.showRhymes = false;
       this.showNextWords = true;
 
-      this.song.getNextWords(this.selectedWord);
+      this.song.getNextWords(this.selectedWord, this.song.uploadLyrics, this.song.id);
     },
 
     toggleUploadLyrics() {
