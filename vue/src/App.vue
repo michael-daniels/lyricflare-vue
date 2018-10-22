@@ -106,7 +106,7 @@ export default {
 
         newSong: {
           id: () => this.state.savedSongs.length + 1,
-          title: 'Over There',
+          title: '',
           createdOn: new Date(),
           lastEdited: 'someotherdate',
           isPublic: true,
@@ -150,6 +150,17 @@ export default {
                 this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
               }
             }
+
+            if (this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length < 100) {
+              console.log('bahh', this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length)
+
+              for (let i = 0; i < rhymes.length; i++) {
+                if (!this.state.savedSongs.find((song) => song.id === songId).tempRhymes.includes(rhymes[i].word)) {
+                  this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
+                }
+              }
+            }
+
           } else {
               this.state.savedSongs.find((song) => song.id === songId).tempRhymes = [];
               for (let i = 0; i < rhymes.length; i++) {
@@ -177,6 +188,17 @@ export default {
                 this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
               }
             }
+
+            if (this.state.savedSongs.find((song) => song.id === songId).tempWords.length < 100) {
+              console.log('bahh', this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length)
+
+              for (let i = 0; i < words.length; i++) {
+                if (!this.state.savedSongs.find((song) => song.id === songId).tempWords.includes(words[i].word)) {
+                  this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
+                }
+              }
+            }
+
           } else {
             this.state.savedSongs.find((song) => song.id === songId).tempWords = [];
             for (let i = 0; i < words.length; i++) {
