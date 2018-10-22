@@ -260,7 +260,7 @@ export default {
           for (let i = event.target.selectionStart; i < event.target.selectionEnd; i++) {
             selectedWord += inputValue[i];
           }
-          
+
           this.selectedWord = selectedWord;
       }
     },

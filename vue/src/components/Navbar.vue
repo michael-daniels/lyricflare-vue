@@ -45,16 +45,17 @@ export default {
     width: 90%;
     left: 0;
     box-shadow: 1px 1px 1px 1px silver;
-    min-height: 5vw;
+    min-height: 4vw;
+    max-height: 50px;
     display: flex;
     padding: 2vh 7vw;
     opacity: .9;
+    align-items: center;
   }
 
   .logo {
     align-items: left;
     flex: 1;
-    letter-spacing: 1px;
   }
 
   .logo-icon {
@@ -64,13 +65,13 @@ export default {
   .logo-lyric {
     color: limegreen;
     font-size: 35px;
-    font-family: Poppins;
+    font-family: Comfortaa;
   }
 
   .logo-flare {
     color: gray;
     font-size: 35px;
-    font-family: Poppins;
+    font-family: Comfortaa;
   }
 
   .fa-fire {

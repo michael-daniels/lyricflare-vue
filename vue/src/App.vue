@@ -13,6 +13,28 @@ export default {
     Screen
   },
 
+  beforeMount() {
+    if (localStorage.getItem('lyricFlareState')) {
+      this.state = JSON.parse(localStorage.getItem('lyricFlareState'))
+    }
+
+    if (!localStorage.getItem('lyricFlareState')) {
+      localStorage.setItem('lyricFlareState', JSON.stringify(this.state))
+    }
+  },
+
+  watch: {
+    'state.savedSongs': {
+      handler(newSavedSongs, oldVal) {
+          console.log('newSavedSongs', newSavedSongs)
+          let stateClone = {...this.state}
+          stateClone.savedSongs = newSavedSongs
+          localStorage.setItem('lyricFlareState', JSON.stringify(stateClone))
+      },
+      deep: true,
+      }
+  },
+
   data() {
     return {
       state: {
@@ -51,57 +73,6 @@ export default {
             getNextWords: this.getNextWords,
             genre: 'Country'
           },
-          {
-            id: 2,
-            title: 'Killshot',
-            createdOn: 'somedate',
-            lastEdited: 'someotherdate',
-            isPublic: true,
-            songLyrics: '',
-            savedInstrumentals: [{ title: 'Get at Em' }],
-            savedRecordings: [{ title: 'Flow 2' }],
-            savedLyrics: [],
-            uploadLyrics: [],
-            tempRhymes: [],
-            tempWords: [],
-            getRhymes: this.getRhymes,
-            getNextWords: this.getNextWords,
-            genre: 'Pop'
-          },
-          {
-            id: 3,
-            title: 'My Kind of Girl',
-            createdOn: 'somedate',
-            lastEdited: 'someotherdate',
-            isPublic: true,
-            songLyrics: '',
-            savedInstrumentals: [{ title: 'Get at Em' }],
-            savedRecordings: [{ title: 'Flow 2' }],
-            savedLyrics: [],
-            uploadLyrics: [],
-            tempRhymes: [],
-            tempWords: [],
-            getRhymes: this.getRhymes,
-            getNextWords: this.getNextWords,
-            genre: 'Hip-hop'
-          },
-          {
-            id: 4,
-            title: 'Over There',
-            createdOn: 'somedate',
-            lastEdited: 'someotherdate',
-            isPublic: true,
-            songLyrics: '',
-            savedInstrumentals: [{ title: 'Get at Em' }],
-            savedRecordings: [{ title: 'Flow 2' }],
-            savedLyrics: [],
-            uploadLyrics: [],
-            tempRhymes: [],
-            tempWords: [],
-            getRhymes: this.getRhymes,
-            getNextWords: this.getNextWords,
-            genre: 'Country'
-          },
         ],
 
         newSong: {
@@ -125,20 +96,12 @@ export default {
     }
   },
 
-  watch: {
-    'state.savedSongs': {
-      handler(newVal, oldVal) {
-          // do something with the object
-      },
-      deep: true,
-      }
-  },
-
   methods: {
     getRhymes(userInput, uploadedLyrics, songId) {
       console.log('getRhymes called', userInput)
       fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
         .then((data) => {
+          console.log(data)
           return data.json();
         })
         .then((rhymes) => {
@@ -223,6 +186,7 @@ export default {
   }
   @import url('https://fonts.googleapis.com/css?family=Poppins');
   @import url('https://fonts.googleapis.com/css?family=Bree+Serif');
+  @import url('https://fonts.googleapis.com/css?family=Comfortaa');
 
   * {
     margin: 0;
