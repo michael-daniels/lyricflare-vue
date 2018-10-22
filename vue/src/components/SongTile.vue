@@ -165,7 +165,7 @@ export default {
       this.showUploadLyrics = false;
       this.showNextWords = false;
 
-      this.song.getRhymes(this.selectedWord, this.song.uploadLyrics, this.song.id);
+      this.getRhymes(this.selectedWord, this.song.uploadLyrics, this.song.id);
     },
 
     toggleShowNextWords() {
@@ -176,7 +176,7 @@ export default {
       this.showRhymes = false;
       this.showNextWords = true;
 
-      this.song.getNextWords(this.selectedWord, this.song.uploadLyrics, this.song.id);
+      this.getNextWords(this.selectedWord, this.song.uploadLyrics, this.song.id);
     },
 
     toggleUploadLyrics() {
@@ -280,6 +280,76 @@ export default {
         this.confirm = 'Uploaded! Add more...'
       }
     },
+
+    getRhymes(userInput, uploadedLyrics, songId) {
+      fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
+        .then((data) => {
+          return data.json();
+        })
+        .then((rhymes) => {
+          if (uploadedLyrics.length > 0) {
+            this.song.tempRhymes = [];
+            for (let i = 0; i < rhymes.length; i++) {
+              if (uploadedLyrics.includes(rhymes[i].word)) {
+                this.song.tempRhymes.push(rhymes[i].word)
+              }
+            }
+
+            if (this.song.tempRhymes.length < 100) {
+              for (let i = 0; i < rhymes.length; i++) {
+                if (!this.song.tempRhymes.includes(rhymes[i].word)) {
+                  this.song.tempRhymes.push(rhymes[i].word)
+                }
+              }
+            }
+
+          } else {
+              this.song.tempRhymes = [];
+              for (let i = 0; i < rhymes.length; i++) {
+                this.song.tempRhymes.push(rhymes[i].word)
+              }
+          }
+        })
+        .catch((error) => {
+          alert(error)
+        })
+    },
+
+    getNextWords(userInput, uploadedLyrics, songId) {
+      fetch(`https://api.datamuse.com/words?lc=${userInput}`)
+        .then((data) => {
+          return data.json();
+        })
+        .then((words) => {
+          if (uploadedLyrics.length > 0) {
+            this.song.tempWords = [];
+            for (let i = 0; i < words.length; i++) {
+              if (uploadedLyrics.includes(words[i].word)) {
+                this.song.tempWords.push(words[i].word)
+              }
+            }
+
+            if (this.song.tempWords.length < 100) {
+              for (let i = 0; i < words.length; i++) {
+                if (!this.song.tempWords.includes(words[i].word)) {
+                  this.song.tempWords.push(words[i].word)
+                }
+              }
+            }
+
+          } else {
+            this.song.tempWords = [];
+            for (let i = 0; i < words.length; i++) {
+              this.song.tempWords.push(words[i].word)
+            }
+
+          }
+
+        })
+        .catch((error) => {
+          alert(error)
+        })
+    }
   },
 
 }

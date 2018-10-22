@@ -6,6 +6,7 @@
 
 <script>
 import Screen from './components/Screen.vue'
+import cloneDeep from 'clone-deep'
 
 export default {
   name: 'app',
@@ -25,9 +26,8 @@ export default {
 
   watch: {
     'state.savedSongs': {
-      handler(newSavedSongs, oldVal) {
-          console.log('newSavedSongs', newSavedSongs)
-          let stateClone = {...this.state}
+      handler(newSavedSongs, oldSavedSongs) {
+          let stateClone = cloneDeep(this.state)
           stateClone.savedSongs = newSavedSongs
           localStorage.setItem('lyricFlareState', JSON.stringify(stateClone))
       },
@@ -69,8 +69,6 @@ export default {
             uploadLyrics: [],
             tempRhymes: [],
             tempWords: [],
-            getRhymes: this.getRhymes,
-            getNextWords: this.getNextWords,
             genre: 'Country'
           },
         ],
@@ -88,8 +86,6 @@ export default {
           uploadLyrics: [],
           tempRhymes: [],
           tempWords: [],
-          getRhymes: this.getRhymes,
-          getNextWords: this.getNextWords,
           genre: 'Country'
         },
       },
@@ -97,84 +93,7 @@ export default {
   },
 
   methods: {
-    getRhymes(userInput, uploadedLyrics, songId) {
-      console.log('getRhymes called', userInput)
-      fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
-        .then((data) => {
-          console.log(data)
-          return data.json();
-        })
-        .then((rhymes) => {
-          console.log('RHYMES API CALL RESPONSE', rhymes)
-          if (uploadedLyrics.length > 0) {
-            this.state.savedSongs.find((song) => song.id === songId).tempRhymes = [];
-            for (let i = 0; i < rhymes.length; i++) {
-              if (uploadedLyrics.includes(rhymes[i].word)) {
-                this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
-              }
-            }
 
-            if (this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length < 100) {
-              console.log('bahh', this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length)
-
-              for (let i = 0; i < rhymes.length; i++) {
-                if (!this.state.savedSongs.find((song) => song.id === songId).tempRhymes.includes(rhymes[i].word)) {
-                  this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
-                }
-              }
-            }
-
-          } else {
-              this.state.savedSongs.find((song) => song.id === songId).tempRhymes = [];
-              for (let i = 0; i < rhymes.length; i++) {
-                this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
-              }
-          }
-        })
-        .catch((error) => {
-          alert(error)
-        })
-    },
-
-    getNextWords(userInput, uploadedLyrics, songId) {
-      console.log('getNextWords called', userInput)
-      fetch(`https://api.datamuse.com/words?lc=${userInput}`)
-        .then((data) => {
-          return data.json();
-        })
-        .then((words) => {
-          console.log('WORDS API CALL RESPONSE', words)
-          if (uploadedLyrics.length > 0) {
-            this.state.savedSongs.find((song) => song.id === songId).tempWords = [];
-            for (let i = 0; i < words.length; i++) {
-              if (uploadedLyrics.includes(words[i].word)) {
-                this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
-              }
-            }
-
-            if (this.state.savedSongs.find((song) => song.id === songId).tempWords.length < 100) {
-              console.log('bahh', this.state.savedSongs.find((song) => song.id === songId).tempRhymes.length)
-
-              for (let i = 0; i < words.length; i++) {
-                if (!this.state.savedSongs.find((song) => song.id === songId).tempWords.includes(words[i].word)) {
-                  this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
-                }
-              }
-            }
-
-          } else {
-            this.state.savedSongs.find((song) => song.id === songId).tempWords = [];
-            for (let i = 0; i < words.length; i++) {
-              this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
-            }
-
-          }
-
-        })
-        .catch((error) => {
-          alert(error)
-        })
-    }
   },
 }
 </script>
