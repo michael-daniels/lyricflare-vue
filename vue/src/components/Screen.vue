@@ -22,9 +22,16 @@
 
         </div>
 
-        <img class="banner-ad" src="http://www.effectsbay.com/wp-content/uploads/2011/07/guitar-center-10-percent-10days.jpg" alt="">
+
 
     </div>
+
+    <div class="footer">
+      <div>
+        LyricFlare™, © 2018
+      </div>
+    </div>
+    <footer></footer>
   </div>
 </template>
 
@@ -32,11 +39,13 @@
 import Vue from 'vue'
 import Navbar from './Navbar.vue'
 import SongTile from './SongTile.vue'
+import Footer from './Footer.vue'
 
 export default {
   components: {
     Navbar,
     SongTile,
+    Footer,
   },
 
   name: 'Screen',
@@ -73,7 +82,7 @@ export default {
     margin: 25px;
   }
   .main-content {
-    height: 100vh;
+    height: 60vh;
     padding: 19vh 7vw;
     background-color: #f2f2f2;
     text-align: center;
@@ -131,6 +140,15 @@ export default {
       color: gray;
     }
 
+    .footer {
+      color: white;
+      font-family: Verdana;
+      background-color: limegreen;
+      min-height: 70px;
+      padding: 0 75px;
+      display: flex;
+      align-items: center;
+    }
 
     @import url('https://use.fontawesome.com/releases/v5.2.0/css/all.css');
     @import url('http://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css');
