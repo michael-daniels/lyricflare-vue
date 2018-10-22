@@ -225,11 +225,8 @@ export default {
     },
 
     selectWord(event) {
-      console.log(event.target.selectionStart);
-      console.log(event.target.selectionEnd);
 
       if (event.target.selectionStart === event.target.selectionEnd) {
-        console.log('mainTextArea', this.$refs)
 
         let selectionValue = event.target.selectionStart;
 
@@ -261,11 +258,9 @@ export default {
           let selectedWord = '';
 
           for (let i = event.target.selectionStart; i < event.target.selectionEnd; i++) {
-            console.log(inputValue[i])
             selectedWord += inputValue[i];
           }
-
-          console.log('selectedWord', selectedWord)
+          
           this.selectedWord = selectedWord;
       }
     },

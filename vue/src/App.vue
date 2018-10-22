@@ -103,6 +103,24 @@ export default {
             genre: 'Country'
           },
         ],
+
+        newSong: {
+          id: () => this.state.savedSongs.length + 1,
+          title: 'Over There',
+          createdOn: new Date(),
+          lastEdited: 'someotherdate',
+          isPublic: true,
+          songLyrics: '',
+          savedInstrumentals: [{ title: 'Get at Em' }],
+          savedRecordings: [{ title: 'Flow 2' }],
+          savedLyrics: [],
+          uploadLyrics: [],
+          tempRhymes: [],
+          tempWords: [],
+          getRhymes: this.getRhymes,
+          getNextWords: this.getNextWords,
+          genre: 'Country'
+        },
       },
     }
   },
@@ -110,7 +128,6 @@ export default {
   watch: {
     'state.savedSongs': {
       handler(newVal, oldVal) {
-        console.log('dis it', this.state.savedSongs[0].uploadLyrics)
           // do something with the object
       },
       deep: true,
@@ -119,15 +136,25 @@ export default {
 
   methods: {
     getRhymes(userInput, uploadedLyrics, songId) {
+      console.log('getRhymes called', userInput)
       fetch(`https://api.datamuse.com/words?rel_rhy=${userInput}`)
         .then((data) => {
           return data.json();
         })
         .then((rhymes) => {
-          for (let i = 0; i < rhymes.length; i++) {
-            if (uploadedLyrics.includes(rhymes[i].word)) {
-              this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
+          console.log('RHYMES API CALL RESPONSE', rhymes)
+          if (uploadedLyrics.length > 0) {
+            this.state.savedSongs.find((song) => song.id === songId).tempRhymes = [];
+            for (let i = 0; i < rhymes.length; i++) {
+              if (uploadedLyrics.includes(rhymes[i].word)) {
+                this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
+              }
             }
+          } else {
+              this.state.savedSongs.find((song) => song.id === songId).tempRhymes = [];
+              for (let i = 0; i < rhymes.length; i++) {
+                this.state.savedSongs.find((song) => song.id === songId).tempRhymes.push(rhymes[i].word)
+              }
           }
         })
         .catch((error) => {
@@ -136,21 +163,22 @@ export default {
     },
 
     getNextWords(userInput, uploadedLyrics, songId) {
+      console.log('getNextWords called', userInput)
       fetch(`https://api.datamuse.com/words?lc=${userInput}`)
         .then((data) => {
           return data.json();
         })
         .then((words) => {
-
+          console.log('WORDS API CALL RESPONSE', words)
           if (uploadedLyrics.length > 0) {
-            console.log('words if', words)
+            this.state.savedSongs.find((song) => song.id === songId).tempWords = [];
             for (let i = 0; i < words.length; i++) {
               if (uploadedLyrics.includes(words[i].word)) {
                 this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
               }
             }
           } else {
-            console.log('words else', words)
+            this.state.savedSongs.find((song) => song.id === songId).tempWords = [];
             for (let i = 0; i < words.length; i++) {
               this.state.savedSongs.find((song) => song.id === songId).tempWords.push(words[i].word)
             }

@@ -13,7 +13,7 @@
           </div>
           <div v-else class="ghost-song-tile">
             <form class="" @submit="addNewSong">
-              <input type="text" ref="titleInput" v-model="newSong.title" placeholder="Title" class="new-song-title-input" @mouseout="toggleIsCreating">
+              <input type="text" ref="titleInput" v-model="state.newSong.title" placeholder="Title" class="new-song-title-input" @mouseout="toggleIsCreating">
             </form>
 
           </div>
@@ -48,19 +48,6 @@ export default {
   data() {
     return {
       isCreating: false,
-      newSong: {
-        id: null,
-        title: '',
-        createdOn: 'somedate',
-        lastEdited: 'someotherdate',
-        isPublic: false,
-        showAds: true,
-        savedInstrumentals: [{ title: 'Drop da Bass' }],
-        savedRecordings: [{ title: 'Sample Melody' }],
-        savedLyrics: null,
-        tempWords: [],
-        tempRhymes: [],
-      },
     }
   },
 
@@ -71,9 +58,9 @@ export default {
 
     addNewSong() {
       event.preventDefault();
-      this.newSong.id = this.state.savedSongs.length + 1;
-      this.state.savedSongs.unshift({...this.newSong});
-      this.newSong.title = '';
+      this.state.newSong.id = this.state.savedSongs.length + 1;
+      this.state.savedSongs.unshift({...this.state.newSong});
+      this.state.newSong.title = '';
     }
   },
 }
