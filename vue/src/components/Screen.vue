@@ -18,7 +18,7 @@
 
           </div>
 
-          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" :tempRhymes="state.tempRhymes" :tempWords="state.tempWords" />
+          <song-tile class="song-tile" v-for="song in state.savedSongs" :song="song" :tempRhymes="state.tempRhymes" :tempWords="state.tempWords" @emitDeleteSong="deleteSong" />
 
         </div>
 
@@ -70,7 +70,15 @@ export default {
       this.state.newSong.id = this.state.savedSongs.length + 1;
       this.state.savedSongs.unshift({...this.state.newSong});
       this.state.newSong.title = '';
-    }
+    },
+
+    deleteSong(value) {
+      console.log('DELETE SONG HEARD IN PARENT', value)
+      console.log('state', this.state)
+      this.state.savedSongs = this.state.savedSongs.filter((song) => {
+        return song !== value
+      })
+    },
   },
 }
 </script>

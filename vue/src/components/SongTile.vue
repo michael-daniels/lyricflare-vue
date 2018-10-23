@@ -36,6 +36,9 @@
               <i class="fa fa-upload" aria-hidden="true"></i>Music
             </div-->
           </div>
+          <div class="single-option" @click="deleteSong">
+            <i class="fa fa-trash" aria-hidden="true"></i>Delete
+          </div>
           <div class="close-modal" @click="closeModal">
             <i class="fa fa-times" aria-hidden="true"></i>
           </div>
@@ -108,6 +111,7 @@
               <textarea ref="mainTextArea" class="main-text-area" v-model="song.songLyrics" name="name" placeholder="Your next hit starts here..." @click="selectWord($event)">
 
               </textarea>
+              testing
           </div>
         </div>
       </modal>
@@ -227,9 +231,7 @@ export default {
     selectWord(event) {
 
       if (localStorage.getItem('copiedWord') === 'true') {
-
         let selectionValue = event.target.selectionStart;
-
         let songLyricsArray = this.song.songLyrics.split('')
 
         songLyricsArray[selectionValue] = `${localStorage.getItem('clipboard')} `
@@ -238,20 +240,13 @@ export default {
 
         //hooking in to this for the insert word feature
           localStorage.setItem('copiedWord', 'false')
-          console.log(event)
-          console.log(this.song)
-          console.log(document.body)
 
       } else {
-
-
         if (event.target.selectionStart === event.target.selectionEnd) {
 
           let selectionValue = event.target.selectionStart;
-
           let startIndex = null;
           let endIndex = null;
-
           let selectedWord = '';
 
           for (let i = selectionValue; i < event.target.value.length; i++) {
@@ -380,6 +375,10 @@ export default {
 
     insertWord() {
       localStorage.setItem('copiedWord', 'false')
+    },
+
+    deleteSong(song) {
+      this.$emit('emitDeleteSong', this.song)
     },
   },
 
