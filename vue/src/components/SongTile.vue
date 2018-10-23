@@ -26,15 +26,15 @@
             <div class="single-option" @click="toggleBank">
               <i class="fas fa-lightbulb"></i>Ideas
             </div>
-            <div class="single-option" @click="toggleGenre">
+            <!--div class="single-option" @click="toggleGenre">
               <i class="fa fa-upload" aria-hidden="true"></i>Genre
-            </div>
+            </div-->
             <div class="single-option" @click="toggleUploadLyrics">
               <i class="fa fa-upload" aria-hidden="true"></i>Lyrics
             </div>
-            <div class="single-option" @click="toggleUploadMusic">
+            <!--div class="single-option" @click="toggleUploadMusic">
               <i class="fa fa-upload" aria-hidden="true"></i>Music
-            </div>
+            </div-->
           </div>
           <div class="close-modal" @click="closeModal">
             <i class="fa fa-times" aria-hidden="true"></i>
@@ -43,7 +43,7 @@
 
         <div class="action-bar" v-if="showRhymes">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in song.tempRhymes"><span class="word-suggestion">{{ word }}</span>   |   </span>
+            <span v-for="word in song.tempRhymes"><span class="word-suggestion" @click="copyToLocalStorage(word)">{{ word }}</span>   |   </span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -226,42 +226,64 @@ export default {
 
     selectWord(event) {
 
-      if (event.target.selectionStart === event.target.selectionEnd) {
+      if (localStorage.getItem('copiedWord') === 'true') {
 
         let selectionValue = event.target.selectionStart;
 
-        let startIndex = null;
-        let endIndex = null;
+        let songLyricsArray = this.song.songLyrics.split('')
 
-        let selectedWord = '';
+        songLyricsArray[selectionValue] = `${localStorage.getItem('clipboard')} `
 
-        for (let i = selectionValue; i < event.target.value.length; i++) {
-          if (event.target.value[i] === ' ') {
-            startIndex = i;
-            break;
-          }
-        }
+        this.song.songLyrics = songLyricsArray.join('')
 
-        for (let i = startIndex - 1; i >= 0; i--) {
-          if (event.target.value[i] === ' ') {
-            endIndex = i;
-            break;
-          }
-          selectedWord += event.target.value[i]
-        }
-
-        this.$refs.mainTextArea.setSelectionRange(endIndex, startIndex)
-        this.selectedWord = selectedWord.split('').reverse('').join('');
+        //hooking in to this for the insert word feature
+          localStorage.setItem('copiedWord', 'false')
+          console.log(event)
+          console.log(this.song)
+          console.log(document.body)
 
       } else {
-          let inputValue = event.target.value;
+
+
+        if (event.target.selectionStart === event.target.selectionEnd) {
+
+          let selectionValue = event.target.selectionStart;
+
+          let startIndex = null;
+          let endIndex = null;
+
           let selectedWord = '';
 
-          for (let i = event.target.selectionStart; i < event.target.selectionEnd; i++) {
-            selectedWord += inputValue[i];
+          for (let i = selectionValue; i < event.target.value.length; i++) {
+            if (event.target.value[i] === ' ') {
+              startIndex = i;
+              break;
+            }
           }
 
-          this.selectedWord = selectedWord;
+          for (let i = startIndex - 1; i >= 0; i--) {
+            if (event.target.value[i] === ' ') {
+              endIndex = i;
+              break;
+            }
+            selectedWord += event.target.value[i]
+          }
+
+          this.$refs.mainTextArea.setSelectionRange(endIndex, startIndex)
+          this.selectedWord = selectedWord.split('').reverse('').join('');
+
+        } else {
+            let inputValue = event.target.value;
+            let selectedWord = '';
+
+            for (let i = event.target.selectionStart; i < event.target.selectionEnd; i++) {
+              selectedWord += inputValue[i];
+            }
+
+            this.selectedWord = selectedWord;
+        }
+
+
       }
     },
 
@@ -349,7 +371,16 @@ export default {
         .catch((error) => {
           alert(error)
         })
-    }
+    },
+
+    copyToLocalStorage(word) {
+      localStorage.setItem('clipboard', word)
+      localStorage.setItem('copiedWord', 'true')
+    },
+
+    insertWord() {
+      localStorage.setItem('copiedWord', 'false')
+    },
   },
 
 }
@@ -458,7 +489,8 @@ export default {
   }
 
   .main-text-area::selection {
-    color: limegreen;
+    background-color: limegreen;
+    color: white;
   }
 
   .fa {
