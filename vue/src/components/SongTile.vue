@@ -23,9 +23,9 @@
             <div class="single-option" @click="toggleShowNextWords">
               <i class="fa fa-arrow-right" aria-hidden="true"></i>Words
             </div>
-            <div class="single-option" @click="toggleBank">
+            <!-- <div class="single-option" @click="toggleBank">
               <i class="fas fa-lightbulb"></i>Ideas
-            </div>
+            </div> -->
             <!--div class="single-option" @click="toggleGenre">
               <i class="fa fa-upload" aria-hidden="true"></i>Genre
             </div-->
