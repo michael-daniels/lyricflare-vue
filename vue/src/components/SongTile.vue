@@ -46,7 +46,7 @@
 
         <div class="action-bar" v-if="showRhymes">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in song.tempRhymes"><span class="word-suggestion" @click="copyToLocalStorage(word)">{{ word }}</span>   |   </span>
+            <span v-for="word in song.tempRhymes"><span class="word-suggestion" @click="copyToLocalStorage(word)">{{ word }}</span><span class="word-seperator">-</span></span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -55,7 +55,7 @@
 
         <div class="action-bar" v-if="showNextWords">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span><span class="word-seperator">-</span></span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -64,7 +64,7 @@
 
         <div class="action-bar" v-if="showBank">
           <div class="action-left">
-            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span>   |   </span>
+            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span><span class="word-seperator">-</span></span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -234,7 +234,14 @@ export default {
         let selectionValue = event.target.selectionStart;
         let songLyricsArray = this.song.songLyrics.split('')
 
-        songLyricsArray[selectionValue] = `${localStorage.getItem('clipboard')} `
+        console.log(songLyricsArray[selectionValue - 1])
+        if (songLyricsArray[selectionValue - 1] === ' ') {
+          songLyricsArray[selectionValue - 1] = ` ${localStorage.getItem('clipboard')} `
+        }
+
+        if (songLyricsArray[selectionValue + 1] === ' ') {
+          songLyricsArray[selectionValue + 1] = ` ${localStorage.getItem('clipboard')} `
+        }
 
         this.song.songLyrics = songLyricsArray.join('')
 
@@ -250,7 +257,7 @@ export default {
           let selectedWord = '';
 
           for (let i = selectionValue; i < event.target.value.length; i++) {
-            if (event.target.value[i] === ' ') {
+            if (event.target.value[i] === ' ' || event.target.value[i] === ',' || event.target.value[i] === event.target.value[event.target.value.length - 1]) {
               startIndex = i;
               break;
             }
@@ -258,7 +265,7 @@ export default {
 
           for (let i = startIndex - 1; i >= 0; i--) {
             if (event.target.value[i] === ' ') {
-              endIndex = i;
+              endIndex = i + 1;
               break;
             }
             selectedWord += event.target.value[i]
@@ -488,8 +495,9 @@ export default {
   }
 
   .main-text-area::selection {
-    background-color: limegreen;
-    color: white;
+    background-color:;
+    color: limegreen;
+    font-weight: bold;
   }
 
   .fa {
@@ -584,6 +592,12 @@ export default {
     white-space: nowrap;
     overflow: scroll;
     scroll: hidden;
+  }
+
+  .word-seperator {
+    margin: 0 15px;
+    font-size: 24px;
+    color:white;
   }
 
 </style>

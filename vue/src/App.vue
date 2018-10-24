@@ -15,6 +15,8 @@ export default {
   },
 
   beforeMount() {
+    clearLocalStorage();
+
     if (localStorage.getItem('lyricFlareState')) {
       this.state = JSON.parse(localStorage.getItem('lyricFlareState'))
     }
@@ -57,12 +59,18 @@ export default {
         savedSongs: [
           {
             id: 1,
-            title: 'Make You Miss Me',
+            title: 'Tutorial Song',
             createdOn: 'somedate',
             lastEdited: 'someotherdate',
             isPublic: false,
             showAds: true,
-            songLyrics: '',
+            songLyrics: `To select a word here, click it. Youll see it highlighted green. \n
+              Next, you can click Rhymes, Words, or Ideas above. These are called actions. \n
+              Actions return a list of words that go with the selected word,
+              depending on what the action name is. \n
+              To insert a word from the action bar into your song,
+              just click the word you want, then click wherever you want to insert it.\n
+              To create a new song, close this one and click the dotted circle, then enter a title.`,
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: [],
@@ -93,7 +101,9 @@ export default {
   },
 
   methods: {
-
+    clearLocalStorage() {
+      localStorage.clear()
+    }
   },
 }
 </script>

@@ -3,7 +3,7 @@
     <div class="logo">
       <span class="logo-lyric"><i class="fas fa-fire"></i>lyric</span><span class="logo-flare">flare</span>
     </div>
-    <div class="menu">
+    <!-- <div class="menu">
       <div class="menu-item-1">
         Hello, {{ this.state.currentUser.firstName }}
       </div>
@@ -16,7 +16,7 @@
           <option v-else value="">Login</option>
         </select>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -51,11 +51,13 @@ export default {
     padding: 2vh 7vw;
     opacity: .9;
     align-items: center;
+    text-align: center;
   }
 
   .logo {
-    align-items: left;
+    align-items: center;
     flex: 1;
+    margin-left: -60px;
   }
 
   .logo-icon {
