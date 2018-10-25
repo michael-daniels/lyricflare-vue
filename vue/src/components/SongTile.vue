@@ -115,7 +115,7 @@
           </div>
         </div>
       </modal>
-      <v-dialog/>
+      <v-dialog />
   </div>
 </template>
 
@@ -141,6 +141,7 @@ export default {
       showBank: false,
       selectedWord: '',
       confirm: 'Uploaded! Add more...',
+      modalOpen: false
     }
   },
 
@@ -148,13 +149,11 @@ export default {
     openModal() {
       console.log('open', this.$modal)
       this.$modal.show(`${this.song.id}`);
-      event.stopPropagation()
     },
 
     closeModal() {
       console.log('close', this.$modal)
       this.$modal.hide(`${this.song.id}`);
-      event.stopPropagation()
     },
 
     checkHover() {
