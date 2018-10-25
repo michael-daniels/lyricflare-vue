@@ -115,6 +115,7 @@
           </div>
         </div>
       </modal>
+      <v-dialog/>
   </div>
 </template>
 
@@ -145,11 +146,15 @@ export default {
 
   methods: {
     openModal() {
+      console.log('open', this.$modal)
       this.$modal.show(`${this.song.id}`);
+      event.stopPropagation()
     },
 
     closeModal() {
+      console.log('close', this.$modal)
       this.$modal.hide(`${this.song.id}`);
+      event.stopPropagation()
     },
 
     checkHover() {
@@ -385,7 +390,18 @@ export default {
     },
 
     deleteSong(song) {
-      this.$emit('emitDeleteSong', this.song)
+      this.$modal.show('dialog', {
+        title: `Delete ${this.song.title}? This cannot be undone.`,
+        buttons: [
+          {
+            title: 'Yes',
+            handler: () => { this.$emit('emitDeleteSong', this.song) }
+          },
+          {
+            title: 'No'
+          }
+       ]
+      })
     },
   },
 
