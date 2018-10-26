@@ -13,7 +13,7 @@
           </div>
           <div v-else class="ghost-song-tile">
             <form class="" @submit="addNewSong">
-              <input type="text" ref="titleInput" v-model="state.newSong.title" placeholder="Title" class="new-song-title-input" @mouseout="toggleIsCreating">
+              <input type="text" ref="titleInput" v-model="state.newSong.title" placeholder="New song title" class="new-song-title-input" @mouseout="toggleIsCreating">
             </form>
 
           </div>
@@ -87,50 +87,45 @@ export default {
 <style scoped>
 
   h1 {
+    font-size: 2em;
     margin: 25px;
   }
   .main-content {
-    height: 60vh;
-    padding: 19vh 7vw;
+    min-height: 100vh;
+    padding: 10vh 7vw;
     background-color: #f2f2f2;
     text-align: center;
   }
 
   .ghost-song-tile {
-      min-width: 290px;
-      max-width: 290px;
-      max-height: 290px;
-      background-color: transparent;
-      border-radius: 50%;
-      padding: 110px 0;
-      align-items: center;
-      margin: 25px;
-      text-align: center;
-      border: 3px limegreen dashed;
-      font-size: 50px;
-      color: limegreen;
-      cursor: pointer;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 270px;
+    max-width: 270px;
+    min-width: 270px;
+    min-width: 270px;
+    height: 270px;
+    width: 270px;
+    background-color: transparent;
+    border-radius: 10px;
+    margin: 25px;
+    border: 3px limegreen dashed;
+    font-size: 50px;
+    color: limegreen;
+    cursor: pointer;
+  }
 
     .ghost-song-tile:hover {
-        min-width: 290px;
-        max-width: 290px;
-        max-height: 290px;
-        background-color: transparent;
-        box-shadow: 1px 1px 1px 1px limegreen;
-        border-radius: 50%;
-        padding: 110px 0;
-        align-items: center;
-        margin: 25px;
-        text-align: center;
-        border: 3px limegreen dashed;
-        font-size: 50px;
-        color: limegreen;
+        background-color: limegreen;
+        color: white;
       }
 
     .song-tile-container {
       display: flex;
-      overflow: scroll;
+      flex-direction: row;
+      flex-flow: row wrap;
+      justify-content: center;
     }
 
     .banner-ad {
@@ -142,9 +137,9 @@ export default {
       height: 45px;
       width: 80%;
       font-size: 24px;
-      border: 3px limegreen dashed;
       border-radius: 5px;
       outline: none;
+      border: none;
       color: gray;
     }
 

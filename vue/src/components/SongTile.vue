@@ -1,21 +1,32 @@
 <template>
   <div class="song-tile" @click="openModal" @mouseover="checkHover" @mouseout="checkHover">
+      <div class="song-tile-content">
+
+      </div>
       <div class="title">
         <h2>{{ song.title }}</h2>
       </div>
-      <hr />
-      <div class="created-on">
+
+      <div class="single-option" @click="deleteSong">
+        <i class="fa fa-trash fa-trash-song-tile" aria-hidden="true"></i>
+      </div>
+      <!-- <div class="created-on">
         <h5>Created: {{ song.createdOn }}</h5>
       </div>
       <div class="last-edited">
         <h5>Last edited: {{ song.lastEdited }}</h5>
-      </div>
+      </div> -->
 
-      <modal class="modal" :name="song.id.toString()" :draggable="false" :adaptive="true" :width="1200" :height="600">
+
+      <modal ref="songModal" class="modal" :name="song.id.toString()" :draggable="false" :adaptive="true" :width="1200" :height="700">
+        <button class="close-modal-btn" @click="closeModal">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+        <div class="song-title">
+          <h2>{{ this.song.title }}</h2>
+        </div>
+
         <div class="modal-header">
-          <div class="song-title">
-            <h1>{{ this.song.title }}</h1>
-          </div>
           <div class="modal-options">
             <div class="single-option" @click="toggleShowRhymes">
               <i class="fa fa-search" aria-hidden="true"></i>Rhymes
@@ -36,17 +47,11 @@
               <i class="fa fa-upload" aria-hidden="true"></i>Music
             </div-->
           </div>
-          <div class="single-option" @click="deleteSong">
-            <i class="fa fa-trash" aria-hidden="true"></i>Delete
-          </div>
-          <div class="close-modal" @click="closeModal">
-            <i class="fa fa-times" aria-hidden="true"></i>
-          </div>
         </div>
 
         <div class="action-bar" v-if="showRhymes">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in song.tempRhymes"><span class="word-suggestion" @click="copyToLocalStorage(word)">{{ word }}</span><span class="word-seperator">-</span></span>
+            <span v-for="(word, index) in song.tempRhymes"><span :id="`word-${index}`" class="word-suggestion" @click="copyToLocalStorage(word, index)">{{ word }}</span><span class="word-seperator">-</span></span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -55,7 +60,7 @@
 
         <div class="action-bar" v-if="showNextWords">
           <div class="action-left suggestion-scroll">
-            <span v-for="word in song.tempWords"><span class="word-suggestion">{{ word }}</span><span class="word-seperator">-</span></span>
+            <span v-for="(word, index) in song.tempWords"><span :id="`word-${index}`" class="word-suggestion" @click="copyToLocalStorage(word, index)">{{ word }}</span><span class="word-seperator">-</span></span>
           </div>
           <div class="action-right">
             <i class="fa fa-times fa-times-action" aria-hidden="true" @click="hideAllActions"></i>
@@ -111,7 +116,6 @@
               <textarea ref="mainTextArea" class="main-text-area" v-model="song.songLyrics" name="name" placeholder="Your next hit starts here..." @click="selectWord($event)">
 
               </textarea>
-              testing
           </div>
         </div>
       </modal>
@@ -141,19 +145,21 @@ export default {
       showBank: false,
       selectedWord: '',
       confirm: 'Uploaded! Add more...',
-      modalOpen: false
+      modalOpen: false,
+      actionBarWordId: null
     }
   },
 
   methods: {
     openModal() {
-      console.log('open', this.$modal)
       this.$modal.show(`${this.song.id}`);
+      this.$refs.songModal.clickToClose = false
+      console.log(this.$refs)
     },
 
     closeModal() {
-      console.log('close', this.$modal)
       this.$modal.hide(`${this.song.id}`);
+      event.stopPropagation()
     },
 
     checkHover() {
@@ -233,6 +239,11 @@ export default {
     },
 
     selectWord(event) {
+
+      if (this.actionBarWordId !== null) {
+        document.getElementById(this.actionBarWordId).style.color = 'white'
+        this.actionBarWordId === null
+      }
 
       if (localStorage.getItem('copiedWord') === 'true') {
         let selectionValue = event.target.selectionStart;
@@ -379,7 +390,10 @@ export default {
         })
     },
 
-    copyToLocalStorage(word) {
+    copyToLocalStorage(word, index) {
+      console.log(event)
+      document.getElementById(`word-${index}`).style.color = 'yellow'
+      this.actionBarWordId = `word-${index}`
       localStorage.setItem('clipboard', word)
       localStorage.setItem('copiedWord', 'true')
     },
@@ -401,6 +415,7 @@ export default {
           }
        ]
       })
+      event.stopPropagation()
     },
   },
 
@@ -410,29 +425,24 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .song-tile {
-    min-width: 300px;
-    max-width: 300px;
-    max-height: 300px;
-    padding: 110px 0;
+    max-height: 270px;
+    max-width: 270px;
+    min-width: 270px;
+    min-width: 270px;
+    height: 270px;
+    width: 270px;
     background-color: white;
+    border-radius: 10px;
     box-shadow: 1px 1px 1px 1px silver;
-    border-radius: 50%;
-    flex: 1;
-    align-items: center;
     margin: 25px;
+    font-size: 18px;
+    color: limegreen;
+    cursor: pointer;
   }
 
   .song-tile:hover {
-    min-width: 300px;
-    max-width: 300px;
-    max-height: 300px;
-    padding: 110px 0;
-    background-color: white;
-    box-shadow: 1px 1px 1px 1px limegreen;
-    border-radius: 50%;
-    flex: 1;
-    align-items: center;
-    margin: 25px;
+    background-color: limegreen;
+    color: white;
     cursor: pointer;
   }
 
@@ -450,6 +460,7 @@ export default {
 
   .modal-header {
     display: flex;
+    flex-direction: row;
   }
 
   .close-modal {
@@ -498,11 +509,12 @@ export default {
   }
 
   .main-text-area {
-    width: 100%;
+    width: 90%;
     min-height: 100vh;
     text-align: center;
-    padding: 10vh 0;
+    padding: 40px 20px;
     font-size: 26px;
+    font-family: Arial;
     border: none;
     outline: none;
     color: gray;
@@ -525,7 +537,7 @@ export default {
 
   .fa-times {
     font-size: 24px;
-    color: lightgray;
+    color: limegreen;
   }
 
   .fa-times:hover {
@@ -536,6 +548,7 @@ export default {
     display: flex;
     padding: 20px 7vw;
     background-color: limegreen;
+    margin-top: 20px;
   }
 
   .word-suggestion {
@@ -544,7 +557,11 @@ export default {
   }
 
   .word-suggestion:hover {
-    color: white;
+    color: yellow;
+  }
+
+  .word-suggestion:active {
+    color: yellow;
   }
 
   .upload-lyrics {
@@ -613,6 +630,18 @@ export default {
     margin: 0 15px;
     font-size: 24px;
     color:white;
+  }
+
+  .song-tile-content {
+    margin-top: 40%
+  }
+
+  .fa-trash-song-tile {
+    margin-top: 15%
+  }
+
+  .close-modal-btn {
+    float:right;
   }
 
 </style>

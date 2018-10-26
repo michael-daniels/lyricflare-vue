@@ -64,13 +64,7 @@ export default {
             lastEdited: 'someotherdate',
             isPublic: false,
             showAds: true,
-            songLyrics: `To select a word here, click it. Youll see it highlighted green. \n
-              Next, you can click Rhymes, Words, or Ideas above. These are called actions. \n
-              Actions return a list of words that go with the selected word,
-              depending on what the action name is. \n
-              To insert a word from the action bar into your song,
-              just click the word you want, then click wherever you want to insert it.\n
-              To create a new song, close this one and click the dotted circle, then enter a title.`,
+            songLyrics: `To select a word here, click it. Youll see it highlighted green. \n\nNext, you can click Rhymes, Words, or Ideas above. These are called actions. \n\nActions return a list of words that go with the selected word,depending on what the action name is. \n\nTo insert a word from the action bar into your song, just click the word you want, then click wherever you want to insert it.\n\nTo create a new song, close this one and click the dotted circle, then enter a title.`,
             savedInstrumentals: [{ title: 'Drop da Bass' }],
             savedRecordings: [{ title: 'Sample Melody' }],
             savedLyrics: [],
@@ -133,7 +127,6 @@ export default {
   }
 
   h2 {
-    color: limegreen;
     font-family: Poppins;
   }
 
