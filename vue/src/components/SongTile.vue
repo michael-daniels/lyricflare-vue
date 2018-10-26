@@ -19,9 +19,7 @@
 
 
       <modal ref="songModal" class="modal" :name="song.id.toString()" :draggable="false" :adaptive="true" :width="1200" :height="700">
-        <button class="close-modal-btn" @click="closeModal">
-          <i class="fa fa-times" aria-hidden="true"></i>
-        </button>
+          <i class="fa fa-times close-modal-btn" aria-hidden="true" @click="closeModal"></i>
         <div class="song-title">
           <h2>{{ this.song.title }}</h2>
         </div>
@@ -78,7 +76,7 @@
 
         <div class="action-bar" v-if="showUploadLyrics">
           <div class="action-left">
-            <div class="action-tip">GET PRO Upload lyrics from other songs to mimic their writing style</div>
+            <div class="action-tip">Upload lyrics from other songs to mimic their writing style. The lyrics you upload will act as filter for rhyme and next word results.</div>
             <textarea class="upload-lyrics" placeholder="Paste lyrics here" @input="uploadLyricsHandler"></textarea>
           </div>
           <div class="action-right">
