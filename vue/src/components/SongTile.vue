@@ -18,7 +18,7 @@
       </div> -->
 
 
-      <modal ref="songModal" class="modal" :name="song.id.toString()" :draggable="false" :adaptive="true" :width="1200" :height="700">
+      <modal ref="songModal" class="modal" :name="song.id.toString()" :draggable="false" :adaptive="true" :width="2000" :height="2000">
           <i class="fa fa-times close-modal-btn" aria-hidden="true" @click="closeModal"></i>
         <div class="song-title">
           <h2>{{ this.song.title }}</h2>
@@ -639,6 +639,7 @@ export default {
   }
 
   .close-modal-btn {
+    margin: 20px;
     float:right;
   }
 
